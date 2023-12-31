@@ -1,6 +1,6 @@
 ## TESTBEAM
-Draws a beam using coordinates entered by the user.
-![](testbeam1.gif)
+Draws a beam using coordinates entered by the user.  
+![](testbeam1.gif)  
 ![](testbeam2.gif)
 
 ## TESTLINE
