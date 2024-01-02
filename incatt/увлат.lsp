@@ -1,6 +1,6 @@
 ;; Cкрипт для увеличения последней цифры значения атрибута в блоке
 ;; на единицу.
-;; Автор: github.com/thetitorenko/autolisp/incatt
+;; Автор: https://github.com/thetitorenko/autolisp/tree/main/incatt
 ;; Версия: v1.0
 
 
@@ -36,7 +36,7 @@
     (setq ndx (+ ndx 1))
     
     ;слайс значения атрибута блока до точки
-    (setq new_tag_1 (substr init_tag 1 ndx))
+    (setq new_tag_1 (substr old_tag 1 ndx))
     
     ;конкатинация обрезаного значения и введенного начального
     ;значения атрибута

@@ -1,11 +1,11 @@
 ;; Script to increment the last digit of an attribute's value 
 ;; in a block by one.
-;; Author: github.com/thetitorenko/autolisp/incatt
+;; Author: https://github.com/thetitorenko/autolisp/tree/main/incatt
 ;; Version: v1.0
 
 
 ;; Main script
-(defun c:incratt ()
+(defun c:incatt ()
   
   ;input for the name of the attribute to change
   (setq tag_name (getstring "\nEnter the name of the attribute in the block: "))
@@ -36,7 +36,7 @@
     (setq ndx (+ ndx 1))
     
     ;slicing the block's attribute value up to the delimiter
-    (setq new_tag_1 (substr init_tag 1 ndx))
+    (setq new_tag_1 (substr old_tag 1 ndx))
     
     ;concatenating the sliced value and the input initial 
     ;value of the attribute
