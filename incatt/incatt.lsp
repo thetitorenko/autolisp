@@ -1,52 +1,52 @@
-;; Cкрипт для увеличения последней цифры значения атрибута в блоке
-;; на единицу.
-;; Автор: github.com/thetitorenko/autolisp
-;; Версия: v1.0
+;; Script to increment the last digit of an attribute's value 
+;; in a block by one.
+;; Author: github.com/thetitorenko/autolisp/incatt
+;; Version: v1.0
 
 
-;; Основной скрипт
+;; Main script
 (defun c:incratt ()
   
-  ;ввод названия атрибута для изменения
-  (setq tag_name (getstring "\nВведите название атрибута в блоке: "))
+  ;input for the name of the attribute to change
+  (setq tag_name (getstring "\nEnter the name of the attribute in the block: "))
 
-  ;ввод начального значения (она же вторая часть нового атрибута)
-  (initget (+ 1 2 4)) ;проверка ввода
-  (setq new_tag_2 (getint "\nВведите начальное значение: "))
+  ;input for initial value (also the second part of the new attribute)
+  (initget (+ 1 2 4)) ;input validation
+  (setq new_tag_2 (getint "\nEnter initial value: "))
   
-  ;ввод типа разделителя
-  (setq sep (getstring "\nВведите символ разделителя: "))
+  ;input for the type of separator
+  (setq sep (getstring "\nEnter separator character: "))
   
-  ;цикл по изменению значения атрибута блока
+  ;loop for changing the attribute value of the block
   (while
   
-    ;выбор и преобразование ename в VLA-объект
-    (setq blk (vlax-ename->vla-object (car (entsel "\nВыберите первый/следующий блок"))))
+    ;selecting and converting ename to VLA-object
+    (setq blk (vlax-ename->vla-object (car (entsel "\nSelect the first/next block"))))
     
-    ;считываение значения атрибута в блоке
+    ;reading the attribute value in the block
     (if (vl-getattributevalue blk tag_name)
       (setq old_tag (vl-getattributevalue blk tag_name))
       (progn
-        (princ "\nАтрибут с заданым именем не найден")
+        (princ "\nAttribute with the given name not found")
         (exit))
     )
     
-    ;поиск индекса "точки" с конца
+    ;finding the index of the separator from the end
     (setq ndx (vl-string-position (ascii sep) old_tag nil T))
     (setq ndx (+ ndx 1))
     
-    ;слайс значения атрибута блока до точки
+    ;slicing the block's attribute value up to the delimiter
     (setq new_tag_1 (substr init_tag 1 ndx))
     
-    ;конкатинация обрезаного значения и введенного начального
-    ;значения атрибута
+    ;concatenating the sliced value and the input initial 
+    ;value of the attribute
     (setq new_tag (strcat new_tag_1 (itoa new_tag_2)))
     
-    ;задание нового значения блока
+    ;setting the new value of the block
     (vl-setattributevalue blk tag_name new_tag)
-    (princ "\nЗначение измененно")
+    (princ "\nValue changed")
     
-    ;увеличеине значения
+    ;incrementing the value
     (setq new_tag_2 (+ new_tag_2 1))
   )
   
@@ -54,8 +54,8 @@
 )
 
 
-;; Получение значения атрибута блока 
-;; Автор Lee Mac
+;; Get Attribute Value
+;; Author Lee Mac
 ;; http://www.lee-mac.com/attributefunctions.html
 (defun vl-getattributevalue ( blk tag )
     (setq tag (strcase tag))
@@ -63,8 +63,8 @@
 )
 
 
-;; Задание значение атрибута блока 
-;; Автор Lee Mac
+;; Set Attribute Values
+;; Author Lee Mac
 (defun vl-setattributevalue ( blk tag val )
     (setq tag (strcase tag))
     (vl-some
