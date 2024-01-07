@@ -1,4 +1,5 @@
 ;;---------------=={ Increment Block's attribute value }==--------------;;
+;;                                                                      ;;
 ;; Script to increment the last digit of an attribute's value           ;;
 ;; in a block by one.                                                   ;;
 ;;                                                                      ;;
@@ -12,7 +13,7 @@
 ;;----------------------------------------------------------------------;;
 ;;  Version 1.1    -    07-01-2020                                      ;;
 ;;                                                                      ;;
-;; - Added checks that the selected object is a block                   ;;
+;; - Added checks that the selected object is a block.                  ;;
 ;;----------------------------------------------------------------------;;
 
 ;; Main script
@@ -31,22 +32,22 @@
   ;loop for changing the attribute value of the block
   (while T
     
-    ; A flag to indicate whether a block has been successfully selected
+    ;a flag to indicate whether a block has been successfully selected
     (setq blkSelected NIL) 
     
-    ; Loop for block selection
+    ;loop for block selection
     (while (not blkSelected)
 
-      ; Prompting for selection and checking if the selection is not nil
+      ;prompting for selection and checking if the selection is not nil
       (setq ename (entsel "\nSelect the first/next block"))
       (if ename
         (progn
-          ; Converting selected entity to VLA-object
+          ;converting selected entity to VLA-object
           (setq blk (vlax-ename->vla-object (car ename)))
 
-          ; Check if the selected object is a block
+          ;check if the selected object is a block
           (if (= (vla-get-objectname blk) "AcDbBlockReference")
-            (setq blkSelected T) ; Correct block selected, exit this loop
+            (setq blkSelected T) ;correct block selected, exit this loop
             (princ "\nThe selected object is not a block. Please select first/next block")
           )
         )
