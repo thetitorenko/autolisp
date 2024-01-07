@@ -1,8 +1,10 @@
 ;;---------------=={ Increment Block's attribute value }==--------------;;
 ;; Script to increment the last digit of an attribute's value           ;;
 ;; in a block by one.                                                   ;;
+;;                                                                      ;;
+;; https://github.com/thetitorenko/autolisp/tree/main/incatt            ;;
 ;;----------------------------------------------------------------------;;
-;;  Author:  Nikita Titorenkio, https://github.com/thetitorenko         ;;
+;;  Author:  Nikita Titorenko,  https://github.com/thetitorenko         ;;
 ;;----------------------------------------------------------------------;;
 ;;  Version 1.0    -    02-01-2020                                      ;;
 ;;                                                                      ;;
@@ -34,24 +36,22 @@
     
     ; Loop for block selection
     (while (not blkSelected)
-      
-      ;selecting and converting ename to VLA-object
-      (setq blk (car (entsel "\nSelect the first/next block")))
-      (setq blk (vlax-ename->vla-object blk))
-    
-    ;check if the selected object is a block
-      (if (= (vla-get-objectname blk) "AcDbBlockReference")
-        (setq blkSelected T) ; Correct block selected, exit loop
-        (princ "\nThe selected object is not a block. Please select a block.")
+
+      ; Prompting for selection and checking if the selection is not nil
+      (setq ename (entsel "\nSelect the first/next block"))
+      (if ename
+        (progn
+          ; Converting selected entity to VLA-object
+          (setq blk (vlax-ename->vla-object (car ename)))
+
+          ; Check if the selected object is a block
+          (if (= (vla-get-objectname blk) "AcDbBlockReference")
+            (setq blkSelected T) ; Correct block selected, exit this loop
+            (princ "\nThe selected object is not a block. Please select first/next block")
+          )
+        )
+        (princ "\nNo selection made. Please select first/next block")
       )
-    )
-    
-    ;reading the attribute value in the block
-    (if (vl-getattributevalue blk tag_name)
-      (setq old_tag (vl-getattributevalue blk tag_name))
-      (progn
-        (princ "\nAttribute with the given name not found")
-        (exit))
     )
     
     ;finding the index of the separator from the end
@@ -76,6 +76,7 @@
   (princ)
 )
 
+;;----------------------------------------------------------------------;;
 
 ;; Get Attribute Value
 ;; Author Lee Mac
@@ -85,6 +86,7 @@
     (vl-some '(lambda ( att ) (if (= tag (strcase (vla-get-tagstring att))) (vla-get-textstring att))) (vlax-invoke blk 'getattributes))
 )
 
+;;----------------------------------------------------------------------;;
 
 ;; Set Attribute Values
 ;; Author Lee Mac
@@ -102,3 +104,7 @@
 
 
 (princ)
+
+;;----------------------------------------------------------------------;;
+;;                            End of Script                             ;;
+;;----------------------------------------------------------------------;;
