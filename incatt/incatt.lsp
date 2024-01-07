@@ -1,8 +1,17 @@
-;; Script to increment the last digit of an attribute's value 
-;; in a block by one.
-;; Author: https://github.com/thetitorenko/autolisp/tree/main/incatt
-;; Version: v1.0
-
+;;---------------=={ Increment Block's attribute value }==--------------;;
+;; Script to increment the last digit of an attribute's value           ;;
+;; in a block by one.                                                   ;;
+;;----------------------------------------------------------------------;;
+;;  Author:  Nikita Titorenkio, https://github.com/thetitorenko         ;;
+;;----------------------------------------------------------------------;;
+;;  Version 1.0    -    02-01-2020                                      ;;
+;;                                                                      ;;
+;;  - First release.                                                    ;;
+;;----------------------------------------------------------------------;;
+;;  Version 1.1    -    07-01-2020                                      ;;
+;;                                                                      ;;
+;; - Added checks that the selected object is a block                   ;;
+;;----------------------------------------------------------------------;;
 
 ;; Main script
 (defun c:incatt ()
@@ -18,10 +27,24 @@
   (setq sep (getstring "\nEnter separator character: "))
   
   ;loop for changing the attribute value of the block
-  (while
-  
-    ;selecting and converting ename to VLA-object
-    (setq blk (vlax-ename->vla-object (car (entsel "\nSelect the first/next block"))))
+  (while T
+    
+    ; A flag to indicate whether a block has been successfully selected
+    (setq blkSelected NIL) 
+    
+    ; Loop for block selection
+    (while (not blkSelected)
+      
+      ;selecting and converting ename to VLA-object
+      (setq blk (car (entsel "\nSelect the first/next block")))
+      (setq blk (vlax-ename->vla-object blk))
+    
+    ;check if the selected object is a block
+      (if (= (vla-get-objectname blk) "AcDbBlockReference")
+        (setq blkSelected T) ; Correct block selected, exit loop
+        (princ "\nThe selected object is not a block. Please select a block.")
+      )
+    )
     
     ;reading the attribute value in the block
     (if (vl-getattributevalue blk tag_name)
