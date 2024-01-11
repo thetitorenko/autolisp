@@ -15,6 +15,10 @@
 ;;                                                                      ;;
 ;; - Added checks that the selected object is a block.                  ;;
 ;;----------------------------------------------------------------------;;
+;;  Version 1.1.1 (hotfix)   -    11-01-2020                            ;;
+;;                                                                      ;;
+;; - Fixing a critical error in script operation                        ;;
+;;----------------------------------------------------------------------;;
 
 ;; Main script
 (defun c:incatt ()
@@ -53,6 +57,14 @@
         )
         (princ "\nNo selection made. Please select first/next block")
       )
+    )
+    
+    ;reading the attribute value in the block
+    (if (vl-getattributevalue blk tag_name)
+      (setq old_tag (vl-getattributevalue blk tag_name))
+      (progn
+        (princ "\nAttribute with the given name not found")
+        (exit))
     )
     
     ;finding the index of the separator from the end
